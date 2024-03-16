@@ -7,6 +7,7 @@
         $fname=$_POST['txtfirstname'];      
         $lname=$_POST['txtlastname'];
         $gender=$_POST['txtgender'];
+        $birthday=$_POST['txtbirthday'];
         
         // for tbluseraccount
         $email=$_POST['txtemail'];     
@@ -26,7 +27,7 @@
         } else {
             // Username is unique, proceed with registration
             // Save data to tbluserprofile            
-            $sql_insert_profile ="INSERT INTO tbluserprofile(firstname, lastname, gender) VALUES('".$fname."','".$lname."','".$gender."')";
+            $sql_insert_profile ="INSERT INTO tbluserprofile(firstname, lastname, gender, birthday) VALUES('".$fname."','".$lname."','".$gender."', '".$birthday."')";
             mysqli_query($connection, $sql_insert_profile);
             
             // Insert the user account data
@@ -41,9 +42,6 @@
         }
     }
 ?>
-
-
-
 
 <head>
     <meta charset="UTF-8">
@@ -65,7 +63,16 @@
             <input type="text" id="txtlastname" name="txtlastname" required>
 
             <label for="txtgender">Gender:</label>
-            <input type="text" id="txtgender" name="txtgender" required>
+            <select id="txtgender" name="txtgender" required>
+                <option value="" selected disabled>Please select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="txtbirthday">Birthday:</label>
+            <input type="date" id="txtbirthday" name="txtbirthday" required>
+
 
             <!-- Keep the existing fields -->
             <label for="username">Username:</label>
@@ -77,8 +84,8 @@
             <label for="txtpassword">Password:</label>
             <input type="password" id="txtpassword" name="txtpassword" required>
 
-            <label for="txtconfirm-password">Confirm Password:</label>
-            <input type="password" id="txtconfirm-password" name="txtconfirm-password" required>
+            <!-- <label for="txtconfirm-password">Confirm Password:</label>
+            <input type="password" id="txtconfirm-password" name="txtconfirm-password" required> -->
 
             <button type="submit" name="btnRegister" onclick="showRegistrationPopup()">Register</button>
 
