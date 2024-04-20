@@ -4,15 +4,15 @@
         // Determine the CSS class based on the alert type
         $alert_class = ($alert_type === 'success') ? 'success' : 'error';
 ?>
-
+ 
 <div class="alert <?php echo $alert_class; ?>">
     <p><?php echo $alert_message; ?></p>
 </div>
-
+ 
 <?php
     }
 ?>
-
+ 
 <script>
     // Add a delay before starting the fade-out animation
     setTimeout(function(){

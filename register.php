@@ -8,10 +8,10 @@
         $lname=$_POST['txtlastname'];
         $gender=$_POST['txtgender'];
         $birthday=$_POST['txtbirthday'];
+        $uname=$_POST['txtusername']; // Get username
         
         // for tbluseraccount
         $email=$_POST['txtemail'];     
-        $uname=$_POST['txtusername'];
         $pword=$_POST['txtpassword'];
         
         // Check if the username already exists
@@ -27,7 +27,7 @@
         } else {
             // Username is unique, proceed with registration
             // Save data to tbluserprofile            
-            $sql_insert_profile ="INSERT INTO tbluserprofile(firstname, lastname, gender, birthday) VALUES('".$fname."','".$lname."','".$gender."', '".$birthday."')";
+            $sql_insert_profile ="INSERT INTO tbluserprofile(firstname, lastname, gender, birthday, username) VALUES('".$fname."','".$lname."','".$gender."', '".$birthday."','".$uname."')";
             mysqli_query($connection, $sql_insert_profile);
             
             // Insert the user account data
