@@ -55,7 +55,7 @@ $result = mysqli_query($connection, $sql);
                         echo "<tr>";
                         echo "<td>".$row['ProductID']."</td>";
                         echo "<td>".$row['ProductName']."</td>";
-                        echo "<td>$".$row['ProductPrice']."</td>";
+                        echo "<td>₱".$row['ProductPrice']."</td>";
                         echo "<td>".$row['ProductDesc']."</td>";
                         echo "<td>";
                         echo "<form method='post'>";
@@ -68,32 +68,31 @@ $result = mysqli_query($connection, $sql);
  
                     if (isset($_POST['add_to_cart'])) {
                         $product_id = $_POST['product_id'];
+                    
+                        // Check if the product already exists in the user's cart
+                        $check_existing_query = "SELECT * FROM tblcart WHERE UserID = '$userID' AND ProductID = $product_id";
+                        $existing_result = mysqli_query($connection, $check_existing_query);
                         
-                        // Insert the product into the user's cart, ignoring if there's already a duplicate entry
-                        $insert_cart_query = "INSERT IGNORE INTO tblcart (CartID, UserID, ProductID, Quantity) 
-                                              VALUES (NULL, '$userID', $product_id, 1)";
-                        $insert_result = mysqli_query($connection, $insert_cart_query);
-                        
-                        // Check for errors
-                        if (!$insert_result) {
-                            // Error occurred
-                            $alert_message = "Error: " . mysqli_error($connection);
-                            $alert_type = "danger";
+                        if (mysqli_num_rows($existing_result) > 0) {
+                            // If the product exists, update the quantity instead of creating a new entry
+                            $update_cart_query = "UPDATE tblcart SET Quantity = Quantity + 1 
+                                                  WHERE UserID = '$userID' AND ProductID = $product_id";
+                            mysqli_query($connection, $update_cart_query);
+                            
+                            $alert_message = "Product quantity incremented in your cart";
+                            $alert_type = "info";
                         } else {
-                            // Check if any rows were affected by the insert query
-                            if (mysqli_affected_rows($connection) > 0) {
-                                $alert_message = "Product added to cart successfully";
-                                $alert_type = "success";
-                            } else {
-                                $alert_message = "Product already exists in your cart";
-                                $alert_type = "warning";
-                            }
+                            // If the product doesn't exist, insert a new entry with a unique CartID
+                            $insert_cart_query = "INSERT INTO tblcart (CartID, UserID, ProductID, Quantity) 
+                                                  VALUES (NULL, '$userID', $product_id, 1)";
+                            mysqli_query($connection, $insert_cart_query);
+                            
+                            $alert_message = "Product added to cart successfully";
+                            $alert_type = "success";
                         }
                         
                         include 'alert.php'; // Include custom alert message
-                    }
-                    
-                    
+                    }                    
  
                     mysqli_close($connection);
                 ?>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2024 at 07:57 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: May 07, 2024 at 06:52 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,13 +28,24 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tblcart` (
+  `CartID` int(6) NOT NULL,
   `ProductID` int(6) NOT NULL,
+  `UserID` int(6) NOT NULL,
   `ProductName` varchar(30) NOT NULL,
   `PriceperUnit` float NOT NULL,
   `ProductDesc` varchar(700) NOT NULL,
   `Quantity` int(6) NOT NULL,
   `TotalPrice` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblcart`
+--
+
+INSERT INTO `tblcart` (`CartID`, `ProductID`, `UserID`, `ProductName`, `PriceperUnit`, `ProductDesc`, `Quantity`, `TotalPrice`) VALUES
+(39, 1, 19, '', 0, '', 1, 0),
+(41, 1, 18, '', 0, '', 4, 0),
+(42, 1, 18, '', 0, '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -79,11 +90,10 @@ CREATE TABLE `tbluseraccount` (
 --
 
 INSERT INTO `tbluseraccount` (`userid`, `emailadd`, `username`, `password`, `usertype`) VALUES
-(11, 'kc@gmail.com', 'kc', '123', ''),
-(12, 'zak@gmail.com', 'zak', '123', ''),
-(13, 'itan@gmail.com', 'tristan', '123', ''),
-(14, 'james@gmail.com', 'james', '123', ''),
-(15, 'james@gmail.com', 'james1', '123', '');
+(16, 'zak123@gmail.com', 'wow1234', '123', ''),
+(17, 'gdgfggd@gmail.com', 'gypsycrusader', 'fdgdgdfdf', ''),
+(18, 'tristan@gmail.com', 'tristan1234', '123', ''),
+(19, 'zak123@gmail.com', 'zak123', '123', '');
 
 -- --------------------------------------------------------
 
@@ -105,11 +115,10 @@ CREATE TABLE `tbluserprofile` (
 --
 
 INSERT INTO `tbluserprofile` (`userid`, `firstname`, `lastname`, `username`, `gender`, `birthday`) VALUES
-(11, 'KC', 'Ajero', 'kc', 'Male', '2024-06-15'),
-(12, 'zak', 'flo', 'zak', 'Female', '2024-03-15'),
-(13, 'itan', 'tl', 'tristan', 'Male', '2024-05-28'),
-(14, 'james', 'acbl', 'james', 'Female', '2024-05-15'),
-(15, 'james', 'acbl', 'james1', 'Male', '2024-05-10');
+(16, 'Wow', 'Wow', 'wow1234', 'Male', '2024-05-04'),
+(17, 'wow', 'wow', 'gypsycrusader', 'Male', '2024-05-04'),
+(18, 'Francis', 'Dayagro', 'tristan1234', 'Male', '2024-05-03'),
+(19, 'Zak', 'Floreta', 'zak123', 'Female', '2024-03-12');
 
 -- --------------------------------------------------------
 
@@ -119,6 +128,7 @@ INSERT INTO `tbluserprofile` (`userid`, `firstname`, `lastname`, `username`, `ge
 
 CREATE TABLE `tblwishlist` (
   `WishlistID` int(6) NOT NULL,
+  `UserName` varchar(30) NOT NULL,
   `UserID` int(6) NOT NULL,
   `ProductName` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -127,11 +137,9 @@ CREATE TABLE `tblwishlist` (
 -- Dumping data for table `tblwishlist`
 --
 
-INSERT INTO `tblwishlist` (`WishlistID`, `UserID`, `ProductName`) VALUES
-(12, 11, 'DHT11/DHT22 Temperature and Humidity Sensor'),
-(13, 14, 'HC-SR04 Ultrasonic Distance Sensor'),
-(14, 12, 'Arduino Nano 33 IoT'),
-(15, 13, 'Arduino LilyPad');
+INSERT INTO `tblwishlist` (`WishlistID`, `UserName`, `UserID`, `ProductName`) VALUES
+(677, '', 18, 'sfsdfds'),
+(678, '', 18, 'sdfsdfds');
 
 --
 -- Indexes for dumped tables
@@ -141,13 +149,15 @@ INSERT INTO `tblwishlist` (`WishlistID`, `UserID`, `ProductName`) VALUES
 -- Indexes for table `tblcart`
 --
 ALTER TABLE `tblcart`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`CartID`),
+  ADD KEY `UserID` (`UserID`);
 
 --
 -- Indexes for table `tblproducts`
 --
 ALTER TABLE `tblproducts`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD UNIQUE KEY `ProductID` (`ProductID`);
 
 --
 -- Indexes for table `tbluseraccount`
@@ -174,6 +184,12 @@ ALTER TABLE `tblwishlist`
 --
 
 --
+-- AUTO_INCREMENT for table `tblcart`
+--
+ALTER TABLE `tblcart`
+  MODIFY `CartID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
 -- AUTO_INCREMENT for table `tblproducts`
 --
 ALTER TABLE `tblproducts`
@@ -183,19 +199,19 @@ ALTER TABLE `tblproducts`
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
 --
 ALTER TABLE `tbluserprofile`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tblwishlist`
 --
 ALTER TABLE `tblwishlist`
-  MODIFY `WishlistID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `WishlistID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=679;
 
 --
 -- Constraints for dumped tables
@@ -205,13 +221,7 @@ ALTER TABLE `tblwishlist`
 -- Constraints for table `tblcart`
 --
 ALTER TABLE `tblcart`
-  ADD CONSTRAINT `ProductID` FOREIGN KEY (`ProductID`) REFERENCES `tblproducts` (`ProductID`);
-
---
--- Constraints for table `tblwishlist`
---
-ALTER TABLE `tblwishlist`
-  ADD CONSTRAINT `UserId` FOREIGN KEY (`UserID`) REFERENCES `tbluseraccount` (`userid`);
+  ADD CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `tbluseraccount` (`userid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

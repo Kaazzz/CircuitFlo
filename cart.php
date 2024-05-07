@@ -34,7 +34,6 @@ if(isset($_POST['cart_id']) && isset($_POST['quantity'])) {
     mysqli_query($connection, $update_cart_query);
 }
 ?>
-<!-- asdsad -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +49,6 @@ if(isset($_POST['cart_id']) && isset($_POST['quantity'])) {
         <table>
             <thead>
                 <tr>
-                    <th>Cart ID</th>
                     <th>Product Name</th>
                     <th>Price per Unit (PHP)</th>
                     <th>Description</th>
@@ -80,7 +78,6 @@ if(isset($_POST['cart_id']) && isset($_POST['quantity'])) {
 
                             // Display cart item
                             echo "<tr>";
-                            echo "<td>".$cart_row['CartID']."</td>";
                             echo "<td>".$cart_row['ProductName']."</td>";
                             echo "<td>₱".$cart_row['ProductPrice']."</td>"; // Display price with ₱ symbol
                             echo "<td>".$cart_row['ProductDesc']."</td>";
