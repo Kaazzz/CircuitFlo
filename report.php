@@ -3,18 +3,26 @@
     include 'connect.php';
 
     // First Table: Users with birthdays in May
-    $sql_may_birthdays = "SELECT UserID, UserName FROM tbluserprofile WHERE MONTH(Birthday) = 5";
+    $sql_may_birthdays = "SELECT u.UserName, up.FirstName, up.LastName, up.Birthday 
+                          FROM tbluserprofile up 
+                          INNER JOIN tbluseraccount u ON up.UserID = u.UserID 
+                          WHERE MONTH(up.Birthday) = 5";
     $result_may_birthdays = mysqli_query($connection, $sql_may_birthdays);
 
     // Second Table: Male Users
-    $sql_male_users = "SELECT UserID, UserName FROM tbluserprofile WHERE Gender = 'Male'";
+    $sql_male_users = "SELECT u.UserName, up.FirstName, up.LastName 
+                       FROM tbluserprofile up 
+                       INNER JOIN tbluseraccount u ON up.UserID = u.UserID 
+                       WHERE up.Gender = 'Male'";
     $result_male_users = mysqli_query($connection, $sql_male_users);
 
     // Third Table: Users and their Wishlist Items
-    $sql_wishlist_items = "SELECT WishlistID, UserID, ProductName FROM tblwishlist";
+    $sql_wishlist_items = "SELECT w.ProductName, u.UserName, up.FirstName, up.LastName 
+                           FROM tblwishlist w 
+                           INNER JOIN tbluseraccount u ON w.UserID = u.UserID 
+                           INNER JOIN tbluserprofile up ON u.UserID = up.UserID";
     $result_wishlist_items = mysqli_query($connection, $sql_wishlist_items);
 ?>
-<!-- adsad -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,16 +39,20 @@
         <table>
             <thead>
                 <tr>
-                    <th>User ID</th>
                     <th>User Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Birthday</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     while($row = mysqli_fetch_assoc($result_may_birthdays)) {
                         echo "<tr>";
-                        echo "<td>".$row['UserID']."</td>";
                         echo "<td>".$row['UserName']."</td>";
+                        echo "<td>".$row['FirstName']."</td>";
+                        echo "<td>".$row['LastName']."</td>";
+                        echo "<td>".$row['Birthday']."</td>";
                         echo "</tr>";
                     }
                 ?>
@@ -51,16 +63,18 @@
         <table>
             <thead>
                 <tr>
-                    <th>User ID</th>
                     <th>User Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     while($row = mysqli_fetch_assoc($result_male_users)) {
                         echo "<tr>";
-                        echo "<td>".$row['UserID']."</td>";
                         echo "<td>".$row['UserName']."</td>";
+                        echo "<td>".$row['FirstName']."</td>";
+                        echo "<td>".$row['LastName']."</td>";
                         echo "</tr>";
                     }
                 ?>
@@ -71,18 +85,20 @@
         <table>
             <thead>
                 <tr>
-                    <th>Wishlist ID</th>
-                    <th>User ID</th>
                     <th>Product Name</th>
+                    <th>User Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     while($row = mysqli_fetch_assoc($result_wishlist_items)) {
                         echo "<tr>";
-                        echo "<td>".$row['WishlistID']."</td>";
-                        echo "<td>".$row['UserID']."</td>";
                         echo "<td>".$row['ProductName']."</td>";
+                        echo "<td>".$row['UserName']."</td>";
+                        echo "<td>".$row['FirstName']."</td>";
+                        echo "<td>".$row['LastName']."</td>";
                         echo "</tr>";
                     }
                 ?>
