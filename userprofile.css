@@ -10,7 +10,7 @@ body {
     background-size: cover;
     background-position: center;
 }
- 
+
 .container {
     width: 350px;
     background-color: rgba(255, 255, 255, 0.9);
@@ -19,12 +19,12 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
- 
+
 h2 {
     text-align: center;
     color: #333;
 }
- 
+
 footer {
     text-align: center;
     background-color: #f4f4f4;
@@ -33,14 +33,24 @@ footer {
     bottom: 0;
     width: 100%;
 }
- 
+
 footer p {
     margin: 0;
     font-size: 14px;
     color: #555;
 }
- 
-.view-products-btn {
+
+.editable {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 2px solid #66a3ff;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    width: calc(100% - 24px); /* Adjusting width for borders and padding */
+}
+
+button {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -53,42 +63,57 @@ footer p {
     border-radius: 5px;
     transition: background-color 0.3s;
 }
- 
-.view-products-btn:hover {
+
+button:hover {
     background-color: #45a049;
 }
 
-/* Add styles for the profile actions */
-.profile-actions {
-    position: absolute;
-    top: 20px;
+.delete {
+    background-color: #f44336; /* Red color for delete button */
+}
+
+.success-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.error-message {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.alert {
+    position: fixed;
+    bottom: 20px;
     right: 20px;
-}
-
-.edit-profile-btn,
-.delete-account-btn {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
+    padding: 15px 20px;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }
 
-.edit-profile-btn:hover {
-    background-color: #45a049;
+.alert p {
+    margin: 0;
 }
 
-.delete-account-btn {
-    background-color: #f44336; /* Red color */
+.alert.hidden {
+    display: none;
 }
 
-.delete-account-btn:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+.alert.success {
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #218838;
+}
+
+.fade-out {
+    opacity: 0;
 }

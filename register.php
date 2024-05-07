@@ -1,47 +1,51 @@
 <?php
-    include 'connect.php';
+session_start();
+include 'connect.php';
 
-    if(isset($_POST['btnRegister'])){        
-        // retrieve data from form and save the value to a variable
-        // for tbluserprofile
-        $fname=$_POST['txtfirstname'];      
-        $lname=$_POST['txtlastname'];
-        $gender=$_POST['txtgender'];
-        $birthday=$_POST['txtbirthday'];
-        $uname=$_POST['txtusername']; // Get username
+if(isset($_POST['btnRegister'])){        
+    // retrieve data from form and save the value to a variable
+    // for tbluserprofile
+    $fname=$_POST['txtfirstname'];      
+    $lname=$_POST['txtlastname'];
+    $gender=$_POST['txtgender'];
+    $birthday=$_POST['txtbirthday'];
+    $uname=$_POST['txtusername']; // Get username
+    
+    // for tbluseraccount
+    $email=$_POST['txtemail'];     
+    $pword=$_POST['txtpassword'];
+    
+    // Check if the username already exists
+    $sql_check_username = "SELECT * FROM tbluseraccount WHERE username='".$uname."'";
+    $result_check_username = mysqli_query($connection, $sql_check_username);
+    $row_check_username = mysqli_num_rows($result_check_username);
+
+    if($row_check_username > 0){
+        // Username already exists, show an alert
+        $_SESSION['alert_message'] = 'Username already exists. Please choose a different one.';
+        $_SESSION['alert_type'] = 'error'; // Set the alert type to 'error'
+    } else {
+        // Username is unique, proceed with registration
+        // Save data to tbluserprofile            
+        $sql_insert_profile ="INSERT INTO tbluserprofile(firstname, lastname, gender, birthday, username) VALUES('".$fname."','".$lname."','".$gender."', '".$birthday."','".$uname."')";
+        mysqli_query($connection, $sql_insert_profile);
         
-        // for tbluseraccount
-        $email=$_POST['txtemail'];     
-        $pword=$_POST['txtpassword'];
-        
-        // Check if the username already exists
-        $sql_check_username = "SELECT * FROM tbluseraccount WHERE username='".$uname."'";
-        $result_check_username = mysqli_query($connection, $sql_check_username);
-        $row_check_username = mysqli_num_rows($result_check_username);
+        // Insert the user account data
+        $sql_insert_account ="INSERT INTO tbluseraccount(emailadd, username, password) VALUES('".$email."','".$uname."','".$pword."')";
+        mysqli_query($connection, $sql_insert_account);
 
-        if($row_check_username > 0){
-            // Username already exists, show an alert
-            $alert_message = 'Username already exists. Please choose a different one.';
-            $alert_type = 'error'; // Set the alert type to 'error'
-            include 'alert.php'; // Include custom alert message
-        } else {
-            // Username is unique, proceed with registration
-            // Save data to tbluserprofile            
-            $sql_insert_profile ="INSERT INTO tbluserprofile(firstname, lastname, gender, birthday, username) VALUES('".$fname."','".$lname."','".$gender."', '".$birthday."','".$uname."')";
-            mysqli_query($connection, $sql_insert_profile);
-            
-            // Insert the user account data
-            $sql_insert_account ="INSERT INTO tbluseraccount(emailadd, username, password) VALUES('".$email."','".$uname."','".$pword."')";
-            mysqli_query($connection, $sql_insert_account);
-
-            $alert_message = 'Registration successful!';
-            $alert_type = 'success'; // Set the alert type to 'success'
-            include 'alert.php'; // Include custom alert message
-
-            //echo "<script>window.location.href = 'login.php';</script>"; // Redirect to login page after successful registration
-        }
+        $_SESSION['alert_message'] = 'Registration successful!';
+        $_SESSION['alert_type'] = 'success'; // Set the alert type to 'success'
     }
+    header("Location: register.php"); // Redirect back to the registration page
+    exit();
+}
+
+include 'alert.php'; // Include custom alert message
 ?>
+
+<!-- Rest of your HTML code -->
+
 
 <head>
     <meta charset="UTF-8">

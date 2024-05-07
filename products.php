@@ -1,3 +1,24 @@
+<?php
+session_start();
+include 'connect.php';
+
+if (!isset($_SESSION['uniqueid'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$userID = $_SESSION['uniqueid'];
+
+if (isset($_GET['search'])) {
+    $search = mysqli_real_escape_string($connection, $_GET['search']);
+    $sql = "SELECT * FROM tblproducts WHERE ProductName LIKE '%$search%' OR ProductDesc LIKE '%$search%'";
+} else {
+    $sql = "SELECT * FROM tblproducts";
+}
+
+$result = mysqli_query($connection, $sql);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,24 +51,7 @@
             </thead>
             <tbody>
                 <?php
-                    include 'connect.php';
- 
-                    // Check if search query is set
-                    if (isset($_GET['search'])) {
-                        // Get search term and sanitize it
-                        $search = mysqli_real_escape_string($connection, $_GET['search']);
-                        // Construct SQL query with search condition
-                        $sql = "SELECT * FROM tblproducts WHERE ProductName LIKE '%$search%' OR ProductDesc LIKE '%$search%'";
-                    } else {
-                        // Default SQL query to fetch all products
-                        $sql = "SELECT * FROM tblproducts";
-                    }
- 
-                    // Execute the query
-                    $result = mysqli_query($connection, $sql);
- 
-                    // Display results
-                    while($row = mysqli_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td>".$row['ProductID']."</td>";
                         echo "<td>".$row['ProductName']."</td>";
@@ -62,40 +66,34 @@
                         echo "</tr>";
                     }
  
-                    // Handle adding products to the cart
-                    if(isset($_POST['add_to_cart'])) {
+                    if (isset($_POST['add_to_cart'])) {
                         $product_id = $_POST['product_id'];
-                        // Check if the product already exists in the cart
-                        $cart_query = "SELECT * FROM tblcart WHERE ProductID = $product_id";
-                        $cart_result = mysqli_query($connection, $cart_query);
-                        if(mysqli_num_rows($cart_result) > 0) {
-                            // If the product exists, increase its quantity
-                            $update_query = "UPDATE tblcart SET Quantity = Quantity + 1 WHERE ProductID = $product_id";
-                            $update_result = mysqli_query($connection, $update_query);
-                            if($update_result) {
-                                $alert_message = "Product quantity updated in cart";
-                                $alert_type = "success";
-                                include 'alert.php'; // Include custom alert message
-                            } else {
-                                $alert_message = "Failed to update product quantity in cart";
-                                $alert_type = "error";
-                                include 'alert.php'; // Include custom alert message
-                            }
+                        
+                        // Insert the product into the user's cart, ignoring if there's already a duplicate entry
+                        $insert_cart_query = "INSERT IGNORE INTO tblcart (CartID, UserID, ProductID, Quantity) 
+                                              VALUES (NULL, '$userID', $product_id, 1)";
+                        $insert_result = mysqli_query($connection, $insert_cart_query);
+                        
+                        // Check for errors
+                        if (!$insert_result) {
+                            // Error occurred
+                            $alert_message = "Error: " . mysqli_error($connection);
+                            $alert_type = "danger";
                         } else {
-                            // If the product doesn't exist, insert it into the cart with quantity 1
-                            $insert_query = "INSERT INTO tblcart (ProductID, Quantity) VALUES ($product_id, 1)";
-                            $insert_result = mysqli_query($connection, $insert_query);
-                            if($insert_result) {
+                            // Check if any rows were affected by the insert query
+                            if (mysqli_affected_rows($connection) > 0) {
                                 $alert_message = "Product added to cart successfully";
                                 $alert_type = "success";
-                                include 'alert.php'; // Include custom alert message
                             } else {
-                                $alert_message = "Failed to add product to cart";
-                                $alert_type = "error";
-                                include 'alert.php'; // Include custom alert message
+                                $alert_message = "Product already exists in your cart";
+                                $alert_type = "warning";
                             }
                         }
+                        
+                        include 'alert.php'; // Include custom alert message
                     }
+                    
+                    
  
                     mysqli_close($connection);
                 ?>

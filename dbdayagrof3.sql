@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2024 at 11:36 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: May 04, 2024 at 07:57 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -79,12 +79,11 @@ CREATE TABLE `tbluseraccount` (
 --
 
 INSERT INTO `tbluseraccount` (`userid`, `emailadd`, `username`, `password`, `usertype`) VALUES
-(1, 'francisdayagro24@gmail.com', 'gypsycrusader', '123456', ''),
-(2, 'zak123@gmail.com', 'zak123', '123456', ''),
-(3, 'tristan@gmail.com', 'tristan123', '123456', ''),
-(4, 'wewe@gmail.com', 'letmesoloher', '123456', ''),
-(5, 'danne@gmail.com', 'mygirlfriend', '123456', ''),
-(6, 'mike@gmail.com', 'mike123', '123456', '');
+(11, 'kc@gmail.com', 'kc', '123', ''),
+(12, 'zak@gmail.com', 'zak', '123', ''),
+(13, 'itan@gmail.com', 'tristan', '123', ''),
+(14, 'james@gmail.com', 'james', '123', ''),
+(15, 'james@gmail.com', 'james1', '123', '');
 
 -- --------------------------------------------------------
 
@@ -106,12 +105,11 @@ CREATE TABLE `tbluserprofile` (
 --
 
 INSERT INTO `tbluserprofile` (`userid`, `firstname`, `lastname`, `username`, `gender`, `birthday`) VALUES
-(1, 'Francis', 'Dayagro', '', 'Male', '2024-04-13'),
-(2, 'Zak', 'Floreta', '', 'Male', '2024-04-10'),
-(3, 'Tristan', 'Tolentino', '', 'Male', '2024-04-24'),
-(4, 'Wedemeyer', 'Dayagro', '', 'Male', '2024-04-15'),
-(5, 'Danne', 'Sasaban', '', 'Female', '2024-04-17'),
-(6, 'Mike', 'Nelvin', 'mike123', 'Male', '2024-04-09');
+(11, 'KC', 'Ajero', 'kc', 'Male', '2024-06-15'),
+(12, 'zak', 'flo', 'zak', 'Female', '2024-03-15'),
+(13, 'itan', 'tl', 'tristan', 'Male', '2024-05-28'),
+(14, 'james', 'acbl', 'james', 'Female', '2024-05-15'),
+(15, 'james', 'acbl', 'james1', 'Male', '2024-05-10');
 
 -- --------------------------------------------------------
 
@@ -121,7 +119,6 @@ INSERT INTO `tbluserprofile` (`userid`, `firstname`, `lastname`, `username`, `ge
 
 CREATE TABLE `tblwishlist` (
   `WishlistID` int(6) NOT NULL,
-  `UserName` varchar(30) NOT NULL,
   `UserID` int(6) NOT NULL,
   `ProductName` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -130,17 +127,11 @@ CREATE TABLE `tblwishlist` (
 -- Dumping data for table `tblwishlist`
 --
 
-INSERT INTO `tblwishlist` (`WishlistID`, `UserName`, `UserID`, `ProductName`) VALUES
-(1, 'tristan123', 4, 'LDR (Light Dependent Resistor)'),
-(2, 'mygirlfriend', 1, 'Pressure Sensor (MPX Series)'),
-(3, 'gypsycrusader', 2, 'Gyroscope'),
-(4, 'letmesoloher', 5, 'Arduino Sensor Kit'),
-(5, 'zak123', 3, 'Arduino WiFi Shield'),
-(6, 'gypsycrusader', 2, 'Heart Rate Sensor'),
-(7, 'gypsycrusader', 2, 'IR Sensor'),
-(8, 'gypsycrusader', 2, 'IR Sensor Shield'),
-(9, 'gypsycrusader', 2, 'Arduino Motor Shield'),
-(10, 'mike123', 0, 'Arduino Due');
+INSERT INTO `tblwishlist` (`WishlistID`, `UserID`, `ProductName`) VALUES
+(12, 11, 'DHT11/DHT22 Temperature and Humidity Sensor'),
+(13, 14, 'HC-SR04 Ultrasonic Distance Sensor'),
+(14, 12, 'Arduino Nano 33 IoT'),
+(15, 13, 'Arduino LilyPad');
 
 --
 -- Indexes for dumped tables
@@ -192,19 +183,19 @@ ALTER TABLE `tblproducts`
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
 --
 ALTER TABLE `tbluserprofile`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tblwishlist`
 --
 ALTER TABLE `tblwishlist`
-  MODIFY `WishlistID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `WishlistID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
@@ -215,6 +206,12 @@ ALTER TABLE `tblwishlist`
 --
 ALTER TABLE `tblcart`
   ADD CONSTRAINT `ProductID` FOREIGN KEY (`ProductID`) REFERENCES `tblproducts` (`ProductID`);
+
+--
+-- Constraints for table `tblwishlist`
+--
+ALTER TABLE `tblwishlist`
+  ADD CONSTRAINT `UserId` FOREIGN KEY (`UserID`) REFERENCES `tbluseraccount` (`userid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

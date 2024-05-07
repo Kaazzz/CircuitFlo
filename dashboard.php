@@ -1,8 +1,18 @@
 <?php
-    session_start();
-    $username = isset($_SESSION['username']) ? $_SESSION['username'] : "Guest";
+session_start();
+include 'connect.php';
+
+// Retrieve session variables
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : "Guest";
+$uniqueid = isset($_SESSION['uniqueid']) ? $_SESSION['uniqueid'] : ""; 
+
+// Redirect to login if user is not authenticated
+if ($username === "Guest") {
+    header("Location: login.php");
+    exit();
+}
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +23,9 @@
 </head>
 <body>
     <div class="container">
-        <h2>Welcome, <?php echo ($username !== "Guest") ? $username : "Guest"; ?>!</h2>
-        <p>This is your dashboard. </br> </br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, laboriosam. Esse ipsum culpa laboriosam, totam hic quidem recusandae eos, numquam iusto aliquid expedita est sapiente quaerat inventore voluptatem corporis aliquam.</p>
+        <h2>Welcome, <?php echo $username; ?>!</h2>
+        <p>This is your dashboard. You can customize it to display various information and actions relevant to the user.</p>
+        <p>For example, you can show recent activities, notifications, user profile settings, or any other relevant content here.</p>
         <!-- Dashboard content goes here -->
        
         <!-- Button to view products -->
@@ -27,9 +38,21 @@
             <button type="submit" class="view-products-btn">View Wishlist</button>
         </form> <br>
 
+        <!-- Button to view cart -->
         <form action="cart.php" method="GET">
             <button type="submit" class="view-products-btn">View Cart</button>
+        </form> <br>
+
+        <!-- Button to view report -->
+        <form action="report.php" method="GET">
+            <button type="submit" class="view-products-btn">View Report</button>
         </form>
+
+        <!-- Buttons for Edit Profile and Delete Account -->
+        <div class="profile-actions">
+            <!-- Link the Edit Profile button to userprofile.php -->
+            <a href="userprofile.php?uniqueid=<?php echo $uniqueid; ?>" class="edit-profile-btn">Edit Profile</a>
+        </div>
     </div>
  
     <footer class="footer">

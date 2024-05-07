@@ -1,12 +1,36 @@
 <?php
-    // Include database connection
-    include 'connect.php';
+session_start();
+include 'connect.php';
 
-    // Fetch wishlist items with user IDs from the database
-    $sql = "SELECT w.*, u.UserID
-            FROM tblwishlist w 
-            INNER JOIN tbluseraccount u ON w.UserName = u.username";
-    $result = mysqli_query($connection, $sql);
+// Retrieve unique id from session
+$userID = $_SESSION['uniqueid'] ?? "";
+
+// Fetch wishlist items for the specific user
+$sql = "SELECT WishlistID, ProductName FROM tblwishlist WHERE UserID = '$userID'";
+$result = mysqli_query($connection, $sql);
+
+// Check for query execution errors
+if (!$result) {
+    die("Query failed: " . mysqli_error($connection));
+}
+
+// Add wishlist item if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $productName = $_POST["product_name"];
+
+    // Insert the new wishlist item into the database
+    $insertSql = "INSERT INTO tblwishlist (UserID, ProductName) VALUES ('$userID', '$productName')";
+    $insertResult = mysqli_query($connection, $insertSql);
+
+    // Check for insertion errors
+    if (!$insertResult) {
+        die("Insertion failed: " . mysqli_error($connection));
+    }
+
+    // Redirect to refresh the page after adding the item
+    header("Location: wishlist.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,12 +44,15 @@
 <body>
     <div class="container">
         <h2>User Wishlist</h2>
+        <form method="post">
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name" required>
+            <button type="submit">Add Wishlist</button>
+        </form>
         <table>
             <thead>
                 <tr>
                     <th>Wishlist ID</th>
-                    <th>User Name</th>
-                    <th>User ID</th>
                     <th>Product Name</th>
                 </tr>
             </thead>
@@ -35,8 +62,6 @@
                     while($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td>".$row['WishlistID']."</td>";
-                        echo "<td>".$row['UserName']."</td>";
-                        echo "<td>".$row['UserID']."</td>";
                         echo "<td>".$row['ProductName']."</td>";
                         echo "</tr>";
                     }
@@ -48,6 +73,6 @@
 </html>
 
 <?php
-    // Close database connection
-    mysqli_close($connection);
+// Close database connection
+mysqli_close($connection);
 ?>
