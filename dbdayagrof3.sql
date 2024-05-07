@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2024 at 06:52 PM
+-- Generation Time: May 07, 2024 at 09:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,9 +43,12 @@ CREATE TABLE `tblcart` (
 --
 
 INSERT INTO `tblcart` (`CartID`, `ProductID`, `UserID`, `ProductName`, `PriceperUnit`, `ProductDesc`, `Quantity`, `TotalPrice`) VALUES
-(39, 1, 19, '', 0, '', 1, 0),
 (41, 1, 18, '', 0, '', 4, 0),
-(42, 1, 18, '', 0, '', 1, 0);
+(42, 1, 18, '', 0, '', 1, 0),
+(43, 1, 19, '', 0, '', 7, 0),
+(44, 3, 19, '', 0, '', 3, 0),
+(46, 4, 19, '', 0, '', 1, 0),
+(47, 2, 19, '', 0, '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -57,19 +60,20 @@ CREATE TABLE `tblproducts` (
   `ProductName` varchar(30) NOT NULL,
   `ProductPrice` float NOT NULL,
   `ProductDesc` varchar(10000) NOT NULL,
-  `ProductID` int(6) NOT NULL
+  `ProductID` int(6) NOT NULL,
+  `ProductImage` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tblproducts`
 --
 
-INSERT INTO `tblproducts` (`ProductName`, `ProductPrice`, `ProductDesc`, `ProductID`) VALUES
-('ArduinoUno', 350, 'The Arduino Uno is a popular microcontroller board based on the ATmega328P. It features 14 digital input/output pins, 6 analog inputs, a 16 MHz quartz crystal, USB connection, power jack, ICSP header, and a reset button. It\'s an excellent choice for beginners and professionals alike for various projects.', 1),
-('Arduino Nano', 250, 'The Arduino Nano is a compact yet powerful microcontroller board based on the ATmega328. It\'s similar to the Arduino Uno but in a smaller form factor, making it suitable for projects where space is limited. It features 14 digital input/output pins, 8 analog inputs, USB connectivity, and more.', 2),
-('Arduino Mega 2560', 1000, 'The Arduino Mega 2560 is a robust microcontroller board based on the ATmega2560. It\'s designed for projects that require more I/O pins and memory. With 54 digital input/output pins, 16 analog inputs, a larger flash memory size, and more, it\'s suitable for complex projects and prototyping.', 3),
-('DHT22 Temperature and Humidity', 200, 'The DHT22 sensor is capable of measuring both temperature and humidity with high accuracy. It uses a digital signal output, making it easy to interface with microcontrollers like Arduino. Ideal for weather stations, environmental monitoring, and HVAC systems.\r\n\r\n', 4),
-('MPU-6050 Gyroscope and Acceler', 300, 'The MPU-6050 sensor combines a gyroscope and accelerometer in a single chip. It provides precise motion sensing capabilities, making it suitable for applications such as motion tracking, gesture recognition, and drone stabilization.', 5);
+INSERT INTO `tblproducts` (`ProductName`, `ProductPrice`, `ProductDesc`, `ProductID`, `ProductImage`) VALUES
+('ArduinoUno', 350, 'The Arduino Uno is a popular microcontroller board based on the ATmega328P. It features 14 digital input/output pins, 6 analog inputs, a 16 MHz quartz crystal, USB connection, power jack, ICSP header, and a reset button. It\'s an excellent choice for beginners and professionals alike for various projects.', 1, '/CircuitFlo/images/uno.webp\r\n'),
+('Arduino Nano', 250, 'The Arduino Nano is a compact yet powerful microcontroller board based on the ATmega328. It\'s similar to the Arduino Uno but in a smaller form factor, making it suitable for projects where space is limited. It features 14 digital input/output pins, 8 analog inputs, USB connectivity, and more.', 2, '/CircuitFlo/images/nano.jpg\r\n'),
+('Arduino Mega 2560', 1000, 'The Arduino Mega 2560 is a robust microcontroller board based on the ATmega2560. It\'s designed for projects that require more I/O pins and memory. With 54 digital input/output pins, 16 analog inputs, a larger flash memory size, and more, it\'s suitable for complex projects and prototyping.', 3, '/CircuitFlo/images/mega.webp\r\n'),
+('DHT22 Temperature and Humidity', 200, 'The DHT22 sensor is capable of measuring both temperature and humidity with high accuracy. It uses a digital signal output, making it easy to interface with microcontrollers like Arduino. Ideal for weather stations, environmental monitoring, and HVAC systems.\r\n\r\n', 4, '/CircuitFlo/images/temp.jpg\r\n'),
+('MPU-6050 Gyroscope and Acceler', 300, 'The MPU-6050 sensor combines a gyroscope and accelerometer in a single chip. It provides precise motion sensing capabilities, making it suitable for applications such as motion tracking, gesture recognition, and drone stabilization.', 5, '/CircuitFlo/images/gyro.jpg\r\n');
 
 -- --------------------------------------------------------
 
@@ -187,7 +191,7 @@ ALTER TABLE `tblwishlist`
 -- AUTO_INCREMENT for table `tblcart`
 --
 ALTER TABLE `tblcart`
-  MODIFY `CartID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `CartID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `tblproducts`
