@@ -24,8 +24,8 @@ if ($username === "Guest") {
 <body>
     <div class="container">
         <h2>Welcome, <?php echo $username; ?>!</h2>
-        <p>This is your dashboard. You can customize it to display various information and actions relevant to the user.</p>
-        <p>For example, you can show recent activities, notifications, user profile settings, or any other relevant content here.</p>
+        <p>This is the user dashboard.</p>
+        <p>Here you can navigate through the products, cart, wishlist, and profile.</p>
         <!-- Dashboard content goes here -->
        
         <!-- Button to view products -->
