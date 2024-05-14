@@ -88,7 +88,7 @@ h2 {
     font-weight: bold;
     margin-top: 20px; /* Add more spacing before total price */
     text-align: right; /* Align total price to the right */
-    background-color: #007bff; /* Add background color */
+    background-color: #242424; /* Add background color */
     color: white; /* Change text color to white */
     padding: 10px 20px; /* Add padding to make it more prominent */
     border-radius: 4px; /* Add border radius */

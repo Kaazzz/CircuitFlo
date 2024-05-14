@@ -48,7 +48,7 @@ $result = mysqli_query($connection, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arduino Products</title>
-    <link rel="stylesheet" type="text/css" href="prod.css">
+    <link rel="stylesheet" type="text/css" href="products.css">
     <style>
         /* Style for the alert box */
         .alert {
