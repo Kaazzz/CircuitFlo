@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2024 at 09:49 PM
+-- Generation Time: May 14, 2024 at 06:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,10 +45,16 @@ CREATE TABLE `tblcart` (
 INSERT INTO `tblcart` (`CartID`, `ProductID`, `UserID`, `ProductName`, `PriceperUnit`, `ProductDesc`, `Quantity`, `TotalPrice`) VALUES
 (41, 1, 18, '', 0, '', 4, 0),
 (42, 1, 18, '', 0, '', 1, 0),
-(43, 1, 19, '', 0, '', 7, 0),
-(44, 3, 19, '', 0, '', 3, 0),
-(46, 4, 19, '', 0, '', 1, 0),
-(47, 2, 19, '', 0, '', 1, 0);
+(63, 2, 19, '', 0, '', 4, 0),
+(64, 4, 19, '', 0, '', 4, 0),
+(65, 5, 19, '', 0, '', 3, 0),
+(66, 3, 19, '', 0, '', 3, 0),
+(67, 1, 19, '', 0, '', 3, 0),
+(68, 1, 21, '', 0, '', 3, 0),
+(69, 3, 21, '', 0, '', 3, 0),
+(70, 2, 21, '', 0, '', 4, 0),
+(71, 4, 21, '', 0, '', 2, 0),
+(72, 5, 21, '', 0, '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -61,19 +67,20 @@ CREATE TABLE `tblproducts` (
   `ProductPrice` float NOT NULL,
   `ProductDesc` varchar(10000) NOT NULL,
   `ProductID` int(6) NOT NULL,
-  `ProductImage` varchar(200) NOT NULL
+  `ProductImage` varchar(200) NOT NULL,
+  `isSensor` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tblproducts`
 --
 
-INSERT INTO `tblproducts` (`ProductName`, `ProductPrice`, `ProductDesc`, `ProductID`, `ProductImage`) VALUES
-('ArduinoUno', 350, 'The Arduino Uno is a popular microcontroller board based on the ATmega328P. It features 14 digital input/output pins, 6 analog inputs, a 16 MHz quartz crystal, USB connection, power jack, ICSP header, and a reset button. It\'s an excellent choice for beginners and professionals alike for various projects.', 1, '/CircuitFlo/images/uno.webp\r\n'),
-('Arduino Nano', 250, 'The Arduino Nano is a compact yet powerful microcontroller board based on the ATmega328. It\'s similar to the Arduino Uno but in a smaller form factor, making it suitable for projects where space is limited. It features 14 digital input/output pins, 8 analog inputs, USB connectivity, and more.', 2, '/CircuitFlo/images/nano.jpg\r\n'),
-('Arduino Mega 2560', 1000, 'The Arduino Mega 2560 is a robust microcontroller board based on the ATmega2560. It\'s designed for projects that require more I/O pins and memory. With 54 digital input/output pins, 16 analog inputs, a larger flash memory size, and more, it\'s suitable for complex projects and prototyping.', 3, '/CircuitFlo/images/mega.webp\r\n'),
-('DHT22 Temperature and Humidity', 200, 'The DHT22 sensor is capable of measuring both temperature and humidity with high accuracy. It uses a digital signal output, making it easy to interface with microcontrollers like Arduino. Ideal for weather stations, environmental monitoring, and HVAC systems.\r\n\r\n', 4, '/CircuitFlo/images/temp.jpg\r\n'),
-('MPU-6050 Gyroscope and Acceler', 300, 'The MPU-6050 sensor combines a gyroscope and accelerometer in a single chip. It provides precise motion sensing capabilities, making it suitable for applications such as motion tracking, gesture recognition, and drone stabilization.', 5, '/CircuitFlo/images/gyro.jpg\r\n');
+INSERT INTO `tblproducts` (`ProductName`, `ProductPrice`, `ProductDesc`, `ProductID`, `ProductImage`, `isSensor`) VALUES
+('Arduino Uno', 350, 'The Arduino Uno is a popular microcontroller board based on the ATmega328P. It features 14 digital input/output pins, 6 analog inputs, a 16 MHz quartz crystal, USB connection, power jack, ICSP header, and a reset button. It\'s an excellent choice for beginners and professionals alike for various projects.', 1, '/CircuitFlo/images/uno.webp\r\n', 0),
+('Arduino Nano', 250, 'The Arduino Nano is a compact yet powerful microcontroller board based on the ATmega328. It\'s similar to the Arduino Uno but in a smaller form factor, making it suitable for projects where space is limited. It features 14 digital input/output pins, 8 analog inputs, USB connectivity, and more.', 2, '/CircuitFlo/images/nano.jpg\r\n', 0),
+('Arduino Mega 2560', 1000, 'The Arduino Mega 2560 is a robust microcontroller board based on the ATmega2560. It\'s designed for projects that require more I/O pins and memory. With 54 digital input/output pins, 16 analog inputs, a larger flash memory size, and more, it\'s suitable for complex projects and prototyping.', 3, '/CircuitFlo/images/mega.webp\r\n', 0),
+('DHT22 Temperature and Humidity', 200, 'The DHT22 sensor is capable of measuring both temperature and humidity with high accuracy. It uses a digital signal output, making it easy to interface with microcontrollers like Arduino. Ideal for weather stations, environmental monitoring, and HVAC systems.\r\n\r\n', 4, '/CircuitFlo/images/temp.jpg\r\n', 1),
+('MPU-6050 Gyroscope and Acceler', 300, 'The MPU-6050 sensor combines a gyroscope and accelerometer in a single chip. It provides precise motion sensing capabilities, making it suitable for applications such as motion tracking, gesture recognition, and drone stabilization.', 5, '/CircuitFlo/images/gyro.jpg\r\n', 1);
 
 -- --------------------------------------------------------
 
@@ -97,7 +104,8 @@ INSERT INTO `tbluseraccount` (`userid`, `emailadd`, `username`, `password`, `use
 (16, 'zak123@gmail.com', 'wow1234', '123', ''),
 (17, 'gdgfggd@gmail.com', 'gypsycrusader', 'fdgdgdfdf', ''),
 (18, 'tristan@gmail.com', 'tristan1234', '123', ''),
-(19, 'zak123@gmail.com', 'zak123', '123', '');
+(19, 'zak123@gmail.com', 'zak123', '123', ''),
+(21, 'kaz@gmail.com', 'kaz', 'kaz', '');
 
 -- --------------------------------------------------------
 
@@ -122,7 +130,8 @@ INSERT INTO `tbluserprofile` (`userid`, `firstname`, `lastname`, `username`, `ge
 (16, 'Wow', 'Wow', 'wow1234', 'Male', '2024-05-04'),
 (17, 'wow', 'wow', 'gypsycrusader', 'Male', '2024-05-04'),
 (18, 'Francis', 'Dayagro', 'tristan1234', 'Male', '2024-05-03'),
-(19, 'Zak', 'Floreta', 'zak123', 'Female', '2024-03-12');
+(19, 'Zak', 'Floreta', 'zak123', 'Female', '2024-03-12'),
+(21, 'kaz', 'olf', 'kaz', 'Male', '2024-05-02');
 
 -- --------------------------------------------------------
 
@@ -143,7 +152,8 @@ CREATE TABLE `tblwishlist` (
 
 INSERT INTO `tblwishlist` (`WishlistID`, `UserName`, `UserID`, `ProductName`) VALUES
 (677, '', 18, 'sfsdfds'),
-(678, '', 18, 'sdfsdfds');
+(678, '', 18, 'sdfsdfds'),
+(679, '', 19, 'Ultrasonic Sensor');
 
 --
 -- Indexes for dumped tables
@@ -191,7 +201,7 @@ ALTER TABLE `tblwishlist`
 -- AUTO_INCREMENT for table `tblcart`
 --
 ALTER TABLE `tblcart`
-  MODIFY `CartID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `CartID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `tblproducts`
@@ -203,19 +213,19 @@ ALTER TABLE `tblproducts`
 -- AUTO_INCREMENT for table `tbluseraccount`
 --
 ALTER TABLE `tbluseraccount`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbluserprofile`
 --
 ALTER TABLE `tbluserprofile`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tblwishlist`
 --
 ALTER TABLE `tblwishlist`
-  MODIFY `WishlistID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=679;
+  MODIFY `WishlistID` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=680;
 
 --
 -- Constraints for dumped tables

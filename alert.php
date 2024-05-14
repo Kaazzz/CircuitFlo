@@ -1,6 +1,6 @@
 <?php
 // Check if the alert message and type are set
-if(isset($_SESSION['alert_message']) && isset($_SESSION['alert_type'])){
+if (isset($_SESSION['alert_message']) && isset($_SESSION['alert_type'])) {
     // Determine the CSS class based on the alert type
     $alert_class = ($_SESSION['alert_type'] === 'success') ? 'success' : 'error';
 ?>
@@ -11,11 +11,13 @@ if(isset($_SESSION['alert_message']) && isset($_SESSION['alert_type'])){
 
 <script>
 // Function to initiate fade out effect
-setTimeout(function(){
+setTimeout(function() {
     var alertBox = document.getElementById('alertBox');
-    if(alertBox){
+    if (alertBox) {
         alertBox.style.opacity = '0';
-        setTimeout(function(){ alertBox.style.display = 'none'; }, 600); // Fade out duration
+        setTimeout(function() {
+            alertBox.style.display = 'none';
+        }, 600); // Fade out duration
     }
 }, 2000); // Delay before fade out starts (2 seconds)
 </script>
