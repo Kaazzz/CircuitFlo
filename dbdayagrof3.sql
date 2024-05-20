@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2024 at 06:15 PM
+-- Generation Time: May 20, 2024 at 07:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -93,19 +93,20 @@ CREATE TABLE `tbluseraccount` (
   `emailadd` varchar(50) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
-  `usertype` varchar(20) NOT NULL
+  `usertype` varchar(20) NOT NULL,
+  `isDeleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbluseraccount`
 --
 
-INSERT INTO `tbluseraccount` (`userid`, `emailadd`, `username`, `password`, `usertype`) VALUES
-(16, 'zak123@gmail.com', 'wow1234', '123', ''),
-(17, 'gdgfggd@gmail.com', 'gypsycrusader', 'fdgdgdfdf', ''),
-(18, 'tristan@gmail.com', 'tristan1234', '123', ''),
-(19, 'zak123@gmail.com', 'zak123', '123', ''),
-(21, 'kaz@gmail.com', 'kaz', 'kaz', '');
+INSERT INTO `tbluseraccount` (`userid`, `emailadd`, `username`, `password`, `usertype`, `isDeleted`) VALUES
+(16, 'zak123@gmail.com', 'wow1234', '123', '', 0),
+(17, 'gdgfggd@gmail.com', 'gypsycrusader', 'fdgdgdfdf', '', 0),
+(18, 'tristan@gmail.com', 'tristan1234', '123', '', 0),
+(19, 'zak123@gmail.com', 'zak123', 'newpass', '', 1),
+(21, 'kaz@gmail.com', 'kaz', 'kaz', '', 0);
 
 -- --------------------------------------------------------
 
