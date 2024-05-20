@@ -58,6 +58,8 @@ include 'alert.php'; // Include custom alert message
 <header class="l-header">
     <?php include 'navbar.php'; ?>
 </header>
+
+<a href="dashboard.php" class="back-btn">Back to Dashboard</a>
     <div class="container">
         <form class="registration-form" method="post" action="">
             <h2>Register</h2>

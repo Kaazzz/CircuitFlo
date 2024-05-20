@@ -51,6 +51,12 @@ if (isset($_POST['confirmSavePassword'])) {
 
 // Handle account deletion
 if (isset($_POST['deleteAccount'])) {
+    // Display delete confirmation modal
+    $_SESSION['delete_confirmation'] = true;
+}
+
+// Handle confirmation of account deletion
+if (isset($_POST['confirmDeleteAccount'])) {
     // Update the isDeleted field in the database
     $delete_account_sql = "UPDATE tbluseraccount SET isDeleted=1 WHERE userid=?";
     $delete_account_stmt = mysqli_prepare($connection, $delete_account_sql);
@@ -64,6 +70,8 @@ if (isset($_POST['deleteAccount'])) {
             $_SESSION['alert_message'] = 'Account deleted successfully!';
             $_SESSION['alert_type'] = 'success';
             session_destroy(); // End the session
+            header("Location: login.php"); // Redirect to login page
+            exit();
         } else {
             // Failed to delete account
             $_SESSION['alert_message'] = 'Failed to delete account';
@@ -148,14 +156,16 @@ if (isset($_POST['deleteAccount'])) {
         <button type="button" onclick="showConfirmModal()">Save Password</button>
     </form>
 
+    <br>
+
     <!-- Separate form for deleting account -->
     <form method="post" action="">
         <!-- Delete button -->
-        <button type="submit" name="deleteAccount" class="delete">Delete Account</button>
+        <button type="button" onclick="showDeleteModal()" class="delete">Delete Account</button>
     </form>
 </div>
 
-<!-- The Modal -->
+<!-- Confirmation Modal for Password Change -->
 <div id="confirmModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeConfirmModal()">&times;</span>
@@ -169,6 +179,18 @@ if (isset($_POST['deleteAccount'])) {
     </div>
 </div>
 
+<!-- Confirmation Modal for Account Deletion -->
+<div id="deleteModal" class="modal" style="display: <?php echo isset($_SESSION['delete_confirmation']) ? 'block' : 'none'; ?>">
+    <div class="modal-content">
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
+        <p>Are you sure you want to delete your account?</p>
+        <form method="post" action="">
+            <button type="submit" name="confirmDeleteAccount">Yes</button>
+            <button type="button" onclick="closeDeleteModal()">No</button>
+        </form>
+    </div>
+</div>
+
 <script>
     // Function to initiate fade out effect for alert box
     setTimeout(function(){
@@ -178,7 +200,7 @@ if (isset($_POST['deleteAccount'])) {
         }
     }, 2000); // Delay before fade out starts (2 seconds)
 
-    // Function to show the confirmation modal
+    // Function to show the confirmation modal for changing password
     function showConfirmModal() {
         var password = document.getElementById('password').value;
         var confirmPassword = document.getElementById('confirm_password').value;
@@ -195,17 +217,33 @@ if (isset($_POST['deleteAccount'])) {
         modal.style.display = "block";
     }
 
-    // Function to close the confirmation modal
+    // Function to close the confirmation modal for changing password
     function closeConfirmModal() {
         var modal = document.getElementById('confirmModal');
         modal.style.display = "none";
     }
 
-    // Close the modal when the user clicks outside of it
+    // Function to show the confirmation modal for deleting account
+    function showDeleteModal() {
+        var modal = document.getElementById('deleteModal');
+        modal.style.display = "block";
+    }
+
+    // Function to close the confirmation modal for deleting account
+    function closeDeleteModal() {
+        var modal = document.getElementById('deleteModal');
+        modal.style.display = "none";
+    }
+
+    // Close the modals when the user clicks outside of them
     window.onclick = function(event) {
-        var modal = document.getElementById('confirmModal');
-        if (event.target == modal) {
-            modal.style.display = "none";
+        var confirmModal = document.getElementById('confirmModal');
+        var deleteModal = document.getElementById('deleteModal');
+        if (event.target == confirmModal) {
+            confirmModal.style.display = "none";
+        }
+        if (event.target == deleteModal) {
+            deleteModal.style.display = "none";
         }
     }
 </script>
