@@ -42,6 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="wishlist.css">
 </head>
 <body>
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
+
+<a href="dashboard.php" class="back-btn">Back to Dashboard</a>
     <div class="container">
         <h2>User Wishlist</h2>
         <form method="post">

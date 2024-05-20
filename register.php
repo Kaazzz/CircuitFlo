@@ -55,6 +55,9 @@ include 'alert.php'; // Include custom alert message
 </head>
 
 <body>
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
     <div class="container">
         <form class="registration-form" method="post" action="">
             <h2>Register</h2>
@@ -102,9 +105,7 @@ include 'alert.php'; // Include custom alert message
         </form>
     </div>
 
-    <footer>
-        <p>Francis Wedemeyer N. Dayagro<br> BSCS - 2</p>
-    </footer>
+    
 
    
 </body>

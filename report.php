@@ -53,8 +53,15 @@
     <link rel="stylesheet" href="report.css">
 </head>
 <body>
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
+
+
     <div class="container">
+        
         <div class="side-panel">
+            
             <h3>Report Choices</h3>
             <ul>
                 <li><a href="#" onclick="showReport('may-birthdays', this)">Users with Birthdays in May</a></li>
@@ -174,7 +181,14 @@
                 <img src="/CircuitFlo/images/chart.png" alt="Chart Image" style="max-width: 100%;">
             </div>
         </div>
+        
     </div>
+
+    <footer>
+    <a href="dashboard.php" class="back-btn">Back to Dashboard</a>
+    </footer>
+
+    
 
     <script>
         function showReport(reportId, element) {

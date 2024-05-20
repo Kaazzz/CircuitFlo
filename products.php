@@ -95,6 +95,7 @@ $result = mysqli_query($connection, $sql);
     </nav>
 </header>
 
+<a href="dashboard.php" class="back-btn">Back to Dashboard</a>
 <div class="container">
     <h2>Arduino Products</h2>
     <!-- Search form -->

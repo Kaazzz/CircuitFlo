@@ -22,6 +22,11 @@ if ($username === "Guest") {
     <title>Dashboard</title>
 </head>
 <body>
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
+
+
     <div class="container">
         <h2>Welcome, <?php echo $username; ?>!</h2>
         <p>This is the user dashboard.</p>
@@ -48,15 +53,16 @@ if ($username === "Guest") {
             <button type="submit" class="view-products-btn">View Report</button>
         </form>
 
+        
         <!-- Buttons for Edit Profile and Delete Account -->
         <div class="profile-actions">
+            
             <!-- Link the Edit Profile button to userprofile.php -->
-            <a href="userprofile.php?uniqueid=<?php echo $uniqueid; ?>" class="edit-profile-btn">Edit Profile</a>
+            <a href="userprofile.php?uniqueid=<?php echo $uniqueid; ?>" class="edit-profile-btn"> Edit Profile</a>
+            
         </div>
     </div>
  
-    <footer class="footer">
-        <p>Francis Wedemeyer Dayagro<br> BSCS - 2</p>
-    </footer>
+    
 </body>
 </html>

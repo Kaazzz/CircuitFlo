@@ -7,7 +7,13 @@
     <link rel="stylesheet" type="text/css" href="cart.css">
 </head>
 <body>
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
+
+<a href="dashboard.php" class="back-btn">Back to Dashboard</a>
     <div class="container">
+        
         <h2>Shopping Cart</h2>
 
         <div class="cart-items">

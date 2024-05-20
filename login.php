@@ -57,7 +57,15 @@ include 'alert.php'; // Include custom alert message
     <link rel="stylesheet" href="login.css?v=<?php echo time(); ?>">
     <title>Login Page</title>
 </head>
+
 <body>
+
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
+
+<a href="dashboard.php" class="back-btn">Back to Dashboard</a>
+
     <div class="container">
         <form class="registration-form" method="post" action="">
             <h2>Login</h2>
@@ -75,8 +83,6 @@ include 'alert.php'; // Include custom alert message
         </form>
     </div>
 
-    <footer>
-        <p>Francis Wedemeyer N. Dayagro<br> BSCS - 2</p>
-    </footer>
+    
 </body>
 </html>

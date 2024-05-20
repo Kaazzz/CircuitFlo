@@ -11,85 +11,34 @@ function escape($string) {
 // Retrieve uniqueid from session
 $uniqueid = $_SESSION['uniqueid'] ?? "";
 
-// Fetch user's profile based on uniqueid
-$sql = "SELECT * FROM tbluserprofile WHERE userid = '$uniqueid'";
-$result = mysqli_query($connection, $sql);
+// Handle form submission for updating password
+if(isset($_POST['confirmSavePassword'])){
+    // Retrieve and escape the new password
+    $password = escape($_POST['password']);
+    $confirm_password = escape($_POST['confirm_password']);
 
-// Check if profile exists
-if ($result && mysqli_num_rows($result) > 0) {
-    $profile = mysqli_fetch_assoc($result);
-} else {
-    // Handle case where profile doesn't exist
-    $profile_not_found = true;
-}
+    if ($password === $confirm_password) {
+        // Hash the password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// Fetch username based on uniqueid
-$sql_username = "SELECT username FROM tbluseraccount WHERE userid = '$uniqueid'";
-$result_username = mysqli_query($connection, $sql_username);
+        // Update the user's password in the database
+        $update_password_sql = "UPDATE tbluseraccount SET password=? WHERE userid=?";
+        $update_password_stmt = mysqli_prepare($connection, $update_password_sql);
+        mysqli_stmt_bind_param($update_password_stmt, "ss", $hashed_password, $uniqueid);
+        $update_password_result = mysqli_stmt_execute($update_password_stmt);
 
-// Check if username exists
-if ($result_username && mysqli_num_rows($result_username) > 0) {
-    $username_row = mysqli_fetch_assoc($result_username);
-    $username = $username_row['username'];
-} else {
-    // Set default username if not found
-    $username = "Unknown";
-}
-
-// Handle form submission for updating profile
-if(isset($_POST['saveProfile'])){
-    // Retrieve updated values from form
-    $username = escape($_POST['username']); // Updated username
-    $firstname = escape($_POST['firstname']);
-    $lastname = escape($_POST['lastname']);
-
-    // Update the username in tbluseraccount
-    $update_account_sql = "UPDATE tbluseraccount SET username='$username' WHERE userid='$uniqueid'";
-    $update_account_result = mysqli_query($connection, $update_account_sql);
-
-    // Update the user's profile in the database
-    $update_profile_sql = "UPDATE tbluserprofile SET firstname='$firstname', lastname='$lastname', username= '$username' WHERE userid='$uniqueid'";
-    $update_result = mysqli_query($connection, $update_profile_sql);
-
-    if($update_result && $update_account_result){
-        // Profile updated successfully
-        $_SESSION['alert_message'] = 'Profile updated successfully!';
-        $_SESSION['alert_type'] = 'success';
-        // Update profile variable with new values
-        $profile['firstname'] = $firstname;
-        $profile['lastname'] = $lastname;
-        $profile['username'] = $username;
-
+        if($update_password_result){
+            // Password updated successfully
+            $_SESSION['alert_message'] = 'Password updated successfully!';
+            $_SESSION['alert_type'] = 'success';
+        } else {
+            // Failed to update password
+            $_SESSION['alert_message'] = 'Failed to update password';
+            $_SESSION['alert_type'] = 'error';
+        }
     } else {
-        // Failed to update profile
-        $_SESSION['alert_message'] = 'Failed to update profile';
-        $_SESSION['alert_type'] = 'error';
-    }
-}
-
-// Handle form submission for deleting user account
-if(isset($_POST['deleteAccount'])){
-    // Delete user account from tbluseraccount
-    $delete_account_sql = "DELETE FROM tbluseraccount WHERE userid='$uniqueid'";
-    $delete_account_result = mysqli_query($connection, $delete_account_sql);
-
-    // Delete user profile from tbluserprofile
-    $delete_profile_sql = "DELETE FROM tbluserprofile WHERE userid='$uniqueid'";
-    $delete_profile_result = mysqli_query($connection, $delete_profile_sql);
-
-    if($delete_account_result && $delete_profile_result){
-        // Account deleted successfully
-        session_unset();
-        session_destroy();
-        // Set delete account success message
-        $_SESSION['alert_message'] = 'Account deleted successfully!';
-        $_SESSION['alert_type'] = 'success';
-        // Redirect to login page
-        header("Location: login.php");
-        exit();
-    } else {
-        // Failed to delete account
-        $_SESSION['alert_message'] = 'Failed to delete account';
+        // Passwords do not match
+        $_SESSION['alert_message'] = 'Passwords do not match';
         $_SESSION['alert_type'] = 'error';
     }
 }
@@ -103,37 +52,83 @@ if(isset($_POST['deleteAccount'])){
     <title>User Profile</title>
     <!-- Include userprofile.css -->
     <link rel="stylesheet" href="userprofile.css">
+    <style>
+        /* Style for the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+<header class="l-header">
+    <?php include 'navbar.php'; ?>
+</header>
+<a href="dashboard.php" class="back-btn">Back to Dashboard</a>
     <div class="container">
-        <?php if(isset($profile_not_found) && $profile_not_found): ?>
-            <h2>Profile Not Found</h2>
-            <p>The profile for this user does not exist.</p>
-        <?php else: ?>
-            <h2>User Profile</h2>
-            <?php include 'alert.php'; ?> <!-- Include alert message -->
-            <!-- Display user's profile information -->
+        <h2>User Profile</h2>
+        <?php include 'alert.php'; ?> <!-- Include alert message -->
+        <!-- Form for changing password -->
+        <form method="post" action="" id="passwordForm">
+            <label for="password">New Password:<br><br></label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm_password"><br><br>Confirm New Password:<br><br></label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <!-- Save button for password -->
+            <br><br>
+            <button type="button" onclick="showConfirmModal()">Save Password</button>
+
+            <!-- Delete button -->
+            <button type="submit" name="deleteAccount" class="delete">Delete Account</button>
+        </form>
+    </div>
+
+    <!-- The Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfirmModal()">&times;</span>
+            <p>Are you sure all the information is correct?</p>
             <form method="post" action="">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" class="editable" value="<?php echo escape($username); ?>" <?php echo isset($_POST['editProfile']) ? '' : 'readonly'; ?>>
-
-                <label for="firstname">First Name:</label>
-                <input type="text" id="firstname" name="firstname" class="editable" value="<?php echo escape($profile['firstname']); ?>" <?php echo isset($_POST['editProfile']) ? '' : 'readonly'; ?>>
-
-                <label for="lastname">Last Name:</label>
-                <input type="text" id="lastname" name="lastname" class="editable" value="<?php echo escape($profile['lastname']); ?>" <?php echo isset($_POST['editProfile']) ? '' : 'readonly'; ?>>
-
-                <!-- Edit and Save buttons -->
-                <?php if(isset($_POST['editProfile'])): ?>
-                    <button type="submit" name="saveProfile" id="saveBtn">Save Changes</button>
-                <?php else: ?>
-                    <button type="submit" name="editProfile">Edit Profile</button>
-                <?php endif; ?>
-
-                <!-- Delete button -->
-                <button type="submit" name="deleteAccount" class="delete">Delete Account</button>
+                <input type="hidden" id="modal_password" name="password">
+                <input type="hidden" id="modal_confirm_password" name="confirm_password">
+                <button type="submit" name="confirmSavePassword">Yes</button>
+                <button type="button" onclick="closeConfirmModal()">No</button>
             </form>
-        <?php endif; ?>
+        </div>
     </div>
 
     <script>
@@ -144,6 +139,37 @@ if(isset($_POST['deleteAccount'])){
                 alertBox.classList.add('fade-out');
             }
         }, 2000); // Delay before fade out starts (2 seconds)
+
+        // Function to show the confirmation modal
+        function showConfirmModal() {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return false;
+            }
+
+            document.getElementById('modal_password').value = password;
+            document.getElementById('modal_confirm_password').value = confirmPassword;
+
+            var modal = document.getElementById('confirmModal');
+            modal.style.display = "block";
+        }
+
+        // Function to close the confirmation modal
+        function closeConfirmModal() {
+            var modal = document.getElementById('confirmModal');
+            modal.style.display = "none";
+        }
+
+        // Close the modal when the user clicks outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById('confirmModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>
